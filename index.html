@@ -208,6 +208,7 @@ footer .flinks a{color:#fff;margin-right:14px}
 .mcard b{font-family:Georgia,'Times New Roman',serif;font-size:21px;line-height:1.2;color:#0B1F4B}
 .mcard .mg{align-self:flex-start;background:#0B1F4B;color:#F1D98B;font-size:12.5px;letter-spacing:.04em;padding:3px 10px;border-radius:999px}
 .mcard small{color:#4A5568;font-size:14px}
+.dr .who{display:flex;flex-direction:column;gap:6px}.dr .pn{display:flex;flex-direction:column}.dr .pn b{font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#0B1F4B;font-style:normal}.dr .pn small{color:#4A5568;font-size:13px}
 </style>
 
 <a class="skip" href="#main">Aller au contenu</a>
@@ -639,33 +640,34 @@ function viewGlossaire(){
 }
 
 var ANNUAIRE=[
-['Procureur du Roi','Parquet','',L('c5-42','Code V, Art. 42')],
-['Substituts du Procureur','Parquet','',L('c5-42','Code V, Art. 42')],
-['Juges d’instruction','Tribunal','',L('c3-31','Code III, Art. 31')],
-['Juges','Tribunal de Police, Tribunal Correctionnel, Tribunal de Première Instance','',L('c5-2','Code V, Art. 2')],
-['Greffier','Greffe','',''],
-['Bâtonnier','Ordre des avocats','',''],
-['Inspection Générale de la Police','Police de Bruxelles','',L('c1-27','Code I, Art. 27')]];
+['Juges','Tribunal de Police, Tribunal Correctionnel, Tribunal de Première Instance','',L('c5-2','Code V, Art. 2'),['Juge en chef','Juge']],
+['Juges d’instruction','Tribunal','',L('c3-31','Code III, Art. 31'),['Juge d’instruction']],
+['Procureur du Roi','Parquet','',L('c5-42','Code V, Art. 42'),['Procureur du Roi']],
+['Substituts du Procureur','Parquet','',L('c5-42','Code V, Art. 42'),['Substitut du Procureur']],
+['Bâtonnier','Ordre des avocats','','',['Bâtonnier']],
+['Avocats','Barreau','','',['Avocat']],
+['Greffier','Greffe','','',['Greffier']],
+['Inspection Générale de la Police','Police de Bruxelles','',L('c1-27','Code I, Art. 27'),[]]];
 var ANNU_LIVE=null;
 function esc2(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-var GRADE_ORDER=['Juge en chef','Juge','Juge d’instruction','Procureur du Roi','Substitut du Procureur','Bâtonnier','Avocat','Greffier','Autre'];
-function annuLiveHtml(){
-  if(ANNU_LIVE===null)return '<p class="disc">Chargement des membres…</p>';
-  if(!ANNU_LIVE.length)return '';
-  var rk=function(g){var i=GRADE_ORDER.indexOf(g);return i<0?GRADE_ORDER.length:i};
-  var l=ANNU_LIVE.slice().sort(function(a,b){return rk(a.grade)-rk(b.grade)||String(a.nom).localeCompare(String(b.nom),'fr')});
-  return '<h2 class="mh2">Membres en fonction</h2><div class="mcards">'+l.map(function(m){return '<div class="mcard"><b>'+esc2(m.nom)+'</b><span class="mg">'+esc2(m.grade||'')+'</span>'+((m.service&&m.service!=='Autre')||m.fonction?'<small>'+esc2([m.service&&m.service!=='Autre'?m.service:'',m.fonction||''].filter(Boolean).join(' · '))+'</small>':'')+'</div>'}).join('')+'</div>';
+function annuWho(grades){
+  var l=(ANNU_LIVE||[]).filter(function(m){return grades.indexOf(m.grade)>=0}).sort(function(a,b){return grades.indexOf(a.grade)-grades.indexOf(b.grade)||String(a.nom).localeCompare(String(b.nom),'fr')});
+  if(!l.length)return '<em>À renseigner</em>';
+  return l.map(function(m){return '<span class="pn"><b>'+esc2(m.nom)+'</b>'+(grades.length>1||m.fonction?'<small>'+esc2([grades.length>1?m.grade:'',m.fonction||''].filter(Boolean).join(' · '))+'</small>':'')+'</span>'}).join('');
+}
+function annuDirHtml(){
+  return ANNUAIRE.map(function(a){return '<div class="dr"><div><b>'+a[0]+'</b><small>'+a[1]+'</small></div><div class="who">'+(a[2]||annuWho(a[4]||[]))+'</div><div class="refs">'+a[3]+'</div></div>'}).join('');
 }
 function loadAnnu(){
   var c=window.PUBLIC_CONFIG;
   if(!c||!c.SUPABASE_URL||!c.SUPABASE_ANON_KEY){ANNU_LIVE=[];return}
   fetch(c.SUPABASE_URL.replace(/\/$/,'')+'/rest/v1/rpc/annuaire_public',{method:'POST',headers:{apikey:c.SUPABASE_ANON_KEY,Authorization:'Bearer '+c.SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:'{}'})
    .then(function(r){return r.ok?r.json():[]}).then(function(l){ANNU_LIVE=Array.isArray(l)?l:[]}).catch(function(){ANNU_LIVE=[]})
-   .then(function(){var e=document.getElementById('annulive');if(e)e.innerHTML=annuLiveHtml()});
+   .then(function(){var e=document.getElementById('annudir');if(e)e.innerHTML=annuDirHtml()});
 }
 function viewAnnuaire(){
   return '<div class="wrap page">'+pageHead('Annuaire de la justice','Qui occupe quelle fonction. Cette page est mise à jour par le Gouvernement.','Annuaire')+
-  '<div id="annulive">'+annuLiveHtml()+'</div><h2 class="mh2" style="margin-top:30px">Les fonctions</h2><div class="dir">'+ANNUAIRE.map(function(a){return '<div class="dr"><div><b>'+a[0]+'</b><small>'+a[1]+'</small></div><div class="who">'+(a[2]||'<em>À renseigner</em>')+'</div><div class="refs">'+a[3]+'</div></div>'}).join('')+'</div>'+
+  '<div class="dir" id="annudir">'+annuDirHtml()+'</div>'+
   '<p class="disc">L’annuaire est en cours de constitution. Les noms seront ajoutés au fur et à mesure des nominations.</p></div>';
 }
 
