@@ -219,7 +219,7 @@ footer .flinks a{color:#fff;margin-right:14px}
     <b>Ville de Bruxelles · Portail juridique</b>
     <span class="flinks"><a href="#annuaire">Annuaire de la justice</a><a href="#mises-a-jour">Mises à jour</a><a href="#contact">Nous contacter</a></span>
     <span>Texte officiel : les Codes sont publiés par le Gouvernement, qui est seul à pouvoir les modifier. En cas de différence entre un guide et un Code, le Code s'applique (Code I, Art. 3).</span>
-    <span>Univers de jeu de rôle fictif : ce portail n'a aucun lien avec l'État belge réel. Édition du 8 octobre 2026.</span>
+    <span>Univers de jeu de rôle fictif : ce portail n'a aucun lien avec l'État belge réel. Édition du 8 octobre 2026 · version 1.1.</span>
   </div>
 </footer>
 
@@ -353,7 +353,7 @@ function viewHome(){
   '<section class="block"><h2>Les huit Codes</h2><p class="sub">Texte intégral, avec renvois cliquables d’un article à l’autre.</p><div class="grid g-codes">'+codes+'</div>'+
   '<div class="hier" role="group" aria-label="Hiérarchie des normes"><span><b>Ordre de priorité</b></span><span>Code I</span>›<span>Code II</span>›<span>Code III</span>›<span>Codes IV à VIII</span></div></section>'+
   '<section class="block"><h2>Guides pratiques</h2><p class="sub">Des résumés pour s’y retrouver. Ils ne remplacent pas les Codes.</p><div class="grid g-two">'+guides+'</div></section>'+
-  (HAS_PDF?'<section class="block"><h2>Textes officiels</h2><p class="sub">Les versions PDF verrouillées, identiques au texte du site.</p>'+pdfLink('Recueil_officiel_des_8_Codes','Recueil officiel des huit Codes (121 pages)',true)+'<p style="margin:10px 0 0"><a href="#textes">Voir tous les textes à télécharger</a></p></section>':'')+
+  '<section class="block"><h2>Documents types</h2><p class="sub">Des formulaires à remplir. Ces documents sont principalement utiles pour les avocats ; un citoyen sans avocat peut aussi les utiliser.</p><a class="act" href="#documents" style="max-width:420px"><b>Voir les documents types</b><span>Plainte, partie civile, amende, restitution, avocat, appel.</span><em>7 documents</em></a></section>'+
   '<div class="note"><b>Pour déposer une plainte ou joindre un magistrat</b>, consultez la page <a href="#contact">Nous contacter</a>. La fiche « Porter plainte » explique la marche à suivre.</div></div>';
   return h;
 }
@@ -455,7 +455,7 @@ function viewSearch(q){
 
 /* ===== Pages ajoutées : parcours, documents, FAQ, glossaire, annuaire, mises à jour, contact ===== */
 var DISCORD_URL='';   /* à renseigner quand le lien d'invitation existe */
-var VERSION='1.0', ED='8 octobre 2026';
+var VERSION='1.1', ED='8 octobre 2026';
 function L(h,t){return '<a href="#'+h+'">'+t+'</a>'}
 function GF(g,n,t){return L('g-'+g+'-'+n,t)}
 function CA(c,n){return L('c'+c+'-'+slug(String(n)),'Code '+ROM[c]+', Art. '+n)}
@@ -626,6 +626,7 @@ function viewAnnuaire(){
 }
 
 var UPDATES=[
+['1.1','8 octobre 2026','Documents types et accueil','Ajout de l’avertissement : les documents types sont principalement utiles pour les avocats. Retrait du bloc « Textes officiels » de l’accueil.'],
 ['1.0','8 octobre 2026','Première édition du portail','Les huit Codes en vigueur, le guide du citoyen et le guide du chef d’entreprise, les textes officiels en PDF, les documents types, la FAQ, le glossaire et les parcours.']];
 function viewMaj(){
   var rows=[1,2,3,4,5,6,7,8].map(function(c){return '<tr><td>Code '+ROM[c]+'</td><td>'+CINFO[c].n+'</td><td>'+ED+'</td></tr>'}).join('');
