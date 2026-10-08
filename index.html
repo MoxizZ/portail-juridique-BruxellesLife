@@ -214,7 +214,7 @@ footer .flinks a{color:#fff;margin-right:14px}
 .newlaw h2{font-size:26px;margin:4px 0 4px;color:#0B1F4B}
 .newlaw .nl-date{color:#4A5568;font-size:14px;margin:0 0 10px}
 .newlaw p{margin:0 0 14px}
-.newlaw.empty{border-style:dashed;border-width:1.5px;box-shadow:none}.newlaw.empty p{margin:0;color:#4A5568}
+.newlaw.empty{border-style:dashed;border-width:2px;box-shadow:none;margin:40px 0 28px;padding:34px 32px;min-height:220px}.newlaw.empty h2{font-size:30px;margin:6px 0 14px}.newlaw.empty p{margin:0 0 10px;color:#4A5568;max-width:62ch}
 .newlaw .nl-prev{border-top:1px solid #E1E5EE;margin-top:16px;padding-top:12px;font-size:14px}.newlaw .nl-prev ul{margin:6px 0 0;padding-left:18px}
 </style>
 
@@ -379,7 +379,7 @@ var NOUVELLES_LOIS=[];
 function newLawHtml(){
   var l=NOUVELLES_LOIS;
   var head='<span class="nl-badge">Nouvelle loi</span>';
-  if(!l.length)return '<aside class="newlaw empty" aria-label="Nouvelle loi">'+head+'<p>Aucune nouvelle loi récente. Chaque nouvelle loi en vigueur sera annoncée ici.</p></aside>';
+  if(!l.length)return '<aside class="newlaw empty" aria-label="Nouvelles lois"><span class="nl-badge">Nouvelles lois</span><h2>Aucun ajustement actuellement</h2><p>Les Codes publiés sur ce portail sont à jour : aucune loi nouvelle ni modification n’est entrée en vigueur depuis l’édition du 8 octobre 2026.</p><p>Toute nouvelle loi ou tout ajustement des Codes sera annoncé ici dès son entrée en vigueur, avec sa date et un lien vers le texte.</p></aside>';
   var n=l[0];
   return '<aside class="newlaw" aria-label="Nouvelle loi">'+head+'<h2>'+n.titre+'</h2><p class="nl-date">En vigueur depuis le '+n.date+(n.ref?' · '+n.ref:'')+'</p><p>'+n.resume+'</p>'+(n.lien?'<a class="btn" href="#'+n.lien+'">Lire le texte</a>':'')+
   (l.length>1?'<div class="nl-prev"><b>Lois précédentes</b><ul>'+l.slice(1,4).map(function(x){return '<li>'+(x.lien?'<a href="#'+x.lien+'">'+x.titre+'</a>':x.titre)+' <small>· '+x.date+'</small></li>'}).join('')+'</ul></div>':'')+'</aside>';
@@ -400,7 +400,7 @@ function viewHome(){
   '<div class="hier" role="group" aria-label="Hiérarchie des normes"><span><b>Ordre de priorité</b></span><span>Code I</span>›<span>Code II</span>›<span>Code III</span>›<span>Codes IV à VIII</span></div></section>'+
   '<section class="block"><h2>Guides pratiques</h2><p class="sub">Des résumés pour s’y retrouver. Ils ne remplacent pas les Codes.</p><div class="grid g-two">'+guides+'</div></section>'+
   '<section class="block"><h2>Documents types</h2><p class="sub">Des formulaires à remplir. Ces documents sont principalement utiles pour les avocats ; un citoyen sans avocat peut aussi les utiliser.</p><a class="act" href="#documents" style="max-width:420px"><b>Voir les documents types</b><span>Plainte, partie civile, amende, restitution, avocat, appel.</span><em>7 documents</em></a></section>'+
-  '<div class="note"><b>Pour déposer une plainte ou joindre un magistrat</b>, consultez la page <a href="#contact">Nous contacter</a>. La fiche « Porter plainte » explique la marche à suivre.</div>'+newLawHtml()+'</div>';
+  '<div class="note"><b>Pour déposer une plainte ou joindre un magistrat</b>, consultez la page <a href="#contact">Nous contacter</a>. La fiche « Porter plainte » explique la marche à suivre.</div></div>';
   return h;
 }
 function viewCodes(){
@@ -436,11 +436,11 @@ function viewGuide(g){
   '<div class="layout"><aside class="toc" aria-label="Table des matières"><details class="tocwrap" id="tw" open><summary>Table des matières</summary><div class="toc-in">'+toc+'</div></details></aside><div>'+body+'</div></div></div>';
 }
 function viewTextes(){
-  if(!HAS_PDF)return '<div class="wrap page"><div class="ph"><div><h1>Registre des lois</h1><p>Les Codes sont lisibles en entier sur ce portail. Les versions PDF verrouillées (recueil de 122 pages et un PDF par Code, édition du 8 octobre 2026) sont disponibles sur la version publiée du portail.</p></div></div><div class="note"><b>Une copie qui ne vient pas de ce portail n\u2019est pas officielle.</b> Seul le Gouvernement publie et modifie les Codes.</div></div>';
+  if(!HAS_PDF)return '<div class="wrap page"><div class="ph"><div><h1>Registre des lois</h1><p>Les Codes sont lisibles en entier sur ce portail. Les versions PDF verrouillées (recueil de 122 pages et un PDF par Code, édition du 8 octobre 2026) sont disponibles sur la version publiée du portail.</p></div></div>'+newLawHtml()+'<div class="note"><b>Une copie qui ne vient pas de ce portail n\u2019est pas officielle.</b> Seul le Gouvernement publie et modifie les Codes.</div></div>';
   var l=[1,2,3,4,5,6,7,8].map(function(c){return pdfLink(CINFO[c].pdf,'Code '+ROM[c]+' · '+CINFO[c].n)}).join('');
   return '<div class="wrap page"><div class="ph"><div><h1>Registre des lois</h1><p>Le Registre des lois rassemble les versions officielles des Codes, en PDF, édition du 8 octobre 2026. Elles sont verrouillées : elles se lisent, se copient et s\u2019impriment, mais ne se modifient pas. Le texte du site est identique.</p></div></div>'+
   pdfLink('Recueil_officiel_des_8_Codes','Recueil officiel des huit Codes · 122 pages',true)+
-  '<h2 style="font-size:22px;margin-top:32px">Un Code à la fois</h2><div class="pdfrow">'+l+'</div>'+
+  '<h2 style="font-size:22px;margin-top:32px">Un Code à la fois</h2><div class="pdfrow">'+l+'</div>'+newLawHtml()+
   '<div class="note"><b>Une copie qui ne vient pas de ce portail n\u2019est pas officielle.</b> Seul le Gouvernement publie et modifie les Codes. Pour vérifier un texte, comparez-le avec celui de cette page.</div></div>';
 }
 function accRe(t){return t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/a/g,'[aàâä]').replace(/e/g,'[eéèêë]').replace(/i/g,'[iîï]').replace(/o/g,'[oôö]').replace(/u/g,'[uùûü]').replace(/c/g,'[cç]')}
