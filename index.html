@@ -329,7 +329,7 @@ function sentence(t){
 function titreSplit(t){var k=t.indexOf('–');return k>0?[t.slice(0,k).trim(),t.slice(k+1).trim()]:['',t]}
 
 /* Navigation */
-var NAV=[['accueil','Accueil'],['codes','Les Codes'],['guides','Guides pratiques'],['parcours','Je suis…'],['documents','Documents types'],['faq','FAQ'],['glossaire','Glossaire'],['textes','Textes officiels']];
+var NAV=[['accueil','Accueil'],['codes','Les Codes'],['guides','Guides pratiques'],['parcours','Je suis…'],['documents','Documents types'],['faq','FAQ'],['glossaire','Glossaire'],['textes','Registre des lois']];
 function navHtml(cur){
   var sec=cur.split('-')[0];var map={accueil:'accueil',codes:'codes',guides:'guides',textes:'textes',recherche:'accueil',parcours:'parcours',documents:'documents',faq:'faq',glossaire:'glossaire'};
   var group=/^c[1-8]$/.test(sec)?'codes':sec==='g'?'guides':(map[sec]||'accueil');
@@ -339,7 +339,7 @@ function totalArts(){var n=0;for(var c in D.codes)D.codes[c].titres.forEach(func
 function pdfLink(name,label,main){if(!HAS_PDF)return '';return '<a class="pdfbtn'+(main?' pdfmain':'')+'" href="pdf/'+name+'.pdf" target="_blank" rel="noopener"><span>'+label+'</span><i>PDF</i></a>'}
 
 function viewHome(){
-  var q='<section class="hero"><div class="wrap"><div><div class="eyebrow">Royaume de Belgique · Ville de Bruxelles</div><h1>Les lois de la Ville de Bruxelles, au même endroit</h1><p class="lead">Les huit Codes, deux guides pratiques et les textes officiels à télécharger. Une seule version, la version en vigueur.</p>'+
+  var q='<section class="hero"><div class="wrap"><div><div class="eyebrow">Royaume de Belgique · Ville de Bruxelles</div><h1>Les lois de la Ville de Bruxelles, au même endroit</h1><p class="lead">Les huit Codes, deux guides pratiques et le Registre des lois à télécharger. Une seule version, la version en vigueur.</p>'+
   '<form class="searchbox" id="hs" role="search"><input id="hq" type="search" placeholder="Un mot ou « Code III art 14 »" aria-label="Rechercher dans les Codes et les guides" autocomplete="off"><button type="submit">Rechercher</button></form><p class="hint">Appuyez sur <kbd>/</kbd> pour rechercher depuis n’importe quelle page.</p></div>'+
   '<div class="facts"><div><b>'+totalArts()+'</b><span>articles en vigueur</span></div><div><b>8</b><span>Codes</span></div><div><b>2</b><span>guides pratiques</span></div></div></div></section>';
   var act=QUICK.map(function(a){return '<a class="act" href="#g-'+a[2]+'-'+a[3]+'"><b>'+a[0]+'</b><span>'+a[1]+'</span><em>Voir la fiche</em></a>'}).join('');
@@ -390,10 +390,10 @@ function viewGuide(g){
   '<div class="layout"><aside class="toc" aria-label="Table des matières"><details class="tocwrap" id="tw" open><summary>Table des matières</summary><div class="toc-in">'+toc+'</div></details></aside><div>'+body+'</div></div></div>';
 }
 function viewTextes(){
-  if(!HAS_PDF)return '<div class="wrap page"><div class="ph"><div><h1>Textes officiels</h1><p>Les Codes sont lisibles en entier sur ce portail. Les versions PDF verrouillées (recueil de 121 pages et un PDF par Code, édition du 8 octobre 2026) sont disponibles sur la version publiée du portail.</p></div></div><div class="note"><b>Une copie qui ne vient pas de ce portail n\u2019est pas officielle.</b> Seul le Gouvernement publie et modifie les Codes.</div></div>';
+  if(!HAS_PDF)return '<div class="wrap page"><div class="ph"><div><h1>Registre des lois</h1><p>Les Codes sont lisibles en entier sur ce portail. Les versions PDF verrouillées (recueil de 122 pages et un PDF par Code, édition du 8 octobre 2026) sont disponibles sur la version publiée du portail.</p></div></div><div class="note"><b>Une copie qui ne vient pas de ce portail n\u2019est pas officielle.</b> Seul le Gouvernement publie et modifie les Codes.</div></div>';
   var l=[1,2,3,4,5,6,7,8].map(function(c){return pdfLink(CINFO[c].pdf,'Code '+ROM[c]+' · '+CINFO[c].n)}).join('');
-  return '<div class="wrap page"><div class="ph"><div><h1>Textes officiels</h1><p>Versions PDF des Codes, édition du 8 octobre 2026. Elles sont verrouillées : elles se lisent, se copient et s\u2019impriment, mais ne se modifient pas. Le texte du site est identique.</p></div></div>'+
-  pdfLink('Recueil_officiel_des_8_Codes','Recueil officiel des huit Codes · 121 pages',true)+
+  return '<div class="wrap page"><div class="ph"><div><h1>Registre des lois</h1><p>Le Registre des lois rassemble les versions officielles des Codes, en PDF, édition du 8 octobre 2026. Elles sont verrouillées : elles se lisent, se copient et s\u2019impriment, mais ne se modifient pas. Le texte du site est identique.</p></div></div>'+
+  pdfLink('Recueil_officiel_des_8_Codes','Recueil officiel des huit Codes · 122 pages',true)+
   '<h2 style="font-size:22px;margin-top:32px">Un Code à la fois</h2><div class="pdfrow">'+l+'</div>'+
   '<div class="note"><b>Une copie qui ne vient pas de ce portail n\u2019est pas officielle.</b> Seul le Gouvernement publie et modifie les Codes. Pour vérifier un texte, comparez-le avec celui de cette page.</div></div>';
 }
@@ -630,7 +630,7 @@ var UPDATES=[
 ['1.3','8 octobre 2026','Corrections des Codes','Code II : trouble mental ajouté aux causes d’irresponsabilité (Art. 5), amende de l’Art. A.09 corrigée, précision sur les contraventions routières punies de prison (Art. 2). Code III et Code V : perquisition d’un cabinet d’avocat en présence du juge d’instruction et du bâtonnier ; accès de l’avocat au dossier dès l’inculpation. Code VII : déclaration des revenus mensuelle (Art. 23).'],
 ['1.2','8 octobre 2026','Avocat en garde à vue','Code III (Art. 17, 43, 60, 65), Code IV et guides : si aucun avocat n’est arrivé 25 minutes après la notification des droits (15 minutes, puis 10 minutes pour le commis d’office), l’OPJ constate la carence et l’interrogatoire peut se poursuivre sans avocat.'],
 ['1.1','8 octobre 2026','Documents types et accueil','Ajout de l’avertissement : les documents types sont principalement utiles pour les avocats. Retrait du bloc « Textes officiels » de l’accueil.'],
-['1.0','8 octobre 2026','Première édition du portail','Les huit Codes en vigueur, le guide du citoyen et le guide du chef d’entreprise, les textes officiels en PDF, les documents types, la FAQ, le glossaire et les parcours.']];
+['1.0','8 octobre 2026','Première édition du portail','Les huit Codes en vigueur, le guide du citoyen et le guide du chef d’entreprise, le Registre des lois en PDF, les documents types, la FAQ, le glossaire et les parcours.']];
 function viewMaj(){
   var rows=[1,2,3,4,5,6,7,8].map(function(c){return '<tr><td>Code '+ROM[c]+'</td><td>'+CINFO[c].n+'</td><td>'+ED+'</td></tr>'}).join('');
   return '<div class="wrap page">'+pageHead('Mises à jour','La version en vigueur de chaque texte, et l’historique des changements.','Mises à jour')+
