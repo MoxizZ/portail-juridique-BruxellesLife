@@ -202,6 +202,12 @@ footer .flinks a{color:#fff;margin-right:14px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .calcbox{display:grid;gap:12px;max-width:620px;background:var(--card,#fff);border:1px solid #D9DEE8;border-radius:12px;padding:16px}.calcbox label{display:grid;gap:6px;font-weight:600;font-size:14px}.calcbox select,.calcbox input{font:inherit;padding:10px;border:1px solid #C9D0DE;border-radius:8px;background:#fff}.calcres{margin:0;font-size:16px}.calcres small{display:block;color:#5A6478;margin-top:4px;font-size:12.5px}
+.mh2{font-size:26px;margin:24px 0 12px}
+.mcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;max-width:920px}
+.mcard{background:#fff;border:1px solid #D9DEE8;border-left:5px solid #C9A227;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 3px rgba(11,31,75,.06)}
+.mcard b{font-family:Georgia,'Times New Roman',serif;font-size:21px;line-height:1.2;color:#0B1F4B}
+.mcard .mg{align-self:flex-start;background:#0B1F4B;color:#F1D98B;font-size:12.5px;letter-spacing:.04em;padding:3px 10px;border-radius:999px}
+.mcard small{color:#4A5568;font-size:14px}
 </style>
 
 <a class="skip" href="#main">Aller au contenu</a>
@@ -642,11 +648,13 @@ var ANNUAIRE=[
 ['Inspection Générale de la Police','Police de Bruxelles','',L('c1-27','Code I, Art. 27')]];
 var ANNU_LIVE=null;
 function esc2(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+var GRADE_ORDER=['Juge en chef','Juge','Juge d’instruction','Procureur du Roi','Substitut du Procureur','Bâtonnier','Avocat','Greffier','Autre'];
 function annuLiveHtml(){
   if(ANNU_LIVE===null)return '<p class="disc">Chargement des membres…</p>';
   if(!ANNU_LIVE.length)return '';
-  var g={},o=[];ANNU_LIVE.forEach(function(m){var k=m.service||'Autre';if(!g[k]){g[k]=[];o.push(k)}g[k].push(m)});
-  return '<h2 style="font-size:22px;margin:28px 0 8px">Membres en fonction</h2>'+o.map(function(k){return '<h3 style="font-size:16px;margin:16px 0 6px">'+esc2(k)+'</h3><div class="dir">'+g[k].map(function(m){return '<div class="dr"><div><b>'+esc2(m.nom)+'</b><small>'+esc2(m.grade||'')+'</small></div><div class="who">'+esc2(m.fonction||'')+'</div><div class="refs"></div></div>'}).join('')+'</div>'}).join('');
+  var rk=function(g){var i=GRADE_ORDER.indexOf(g);return i<0?GRADE_ORDER.length:i};
+  var l=ANNU_LIVE.slice().sort(function(a,b){return rk(a.grade)-rk(b.grade)||String(a.nom).localeCompare(String(b.nom),'fr')});
+  return '<h2 class="mh2">Membres en fonction</h2><div class="mcards">'+l.map(function(m){return '<div class="mcard"><b>'+esc2(m.nom)+'</b><span class="mg">'+esc2(m.grade||'')+'</span>'+((m.service&&m.service!=='Autre')||m.fonction?'<small>'+esc2([m.service&&m.service!=='Autre'?m.service:'',m.fonction||''].filter(Boolean).join(' · '))+'</small>':'')+'</div>'}).join('')+'</div>';
 }
 function loadAnnu(){
   var c=window.PUBLIC_CONFIG;
@@ -657,8 +665,8 @@ function loadAnnu(){
 }
 function viewAnnuaire(){
   return '<div class="wrap page">'+pageHead('Annuaire de la justice','Qui occupe quelle fonction. Cette page est mise à jour par le Gouvernement.','Annuaire')+
-  '<div class="dir">'+ANNUAIRE.map(function(a){return '<div class="dr"><div><b>'+a[0]+'</b><small>'+a[1]+'</small></div><div class="who">'+(a[2]||'<em>À renseigner</em>')+'</div><div class="refs">'+a[3]+'</div></div>'}).join('')+'</div>'+
-  '<div id="annulive">'+annuLiveHtml()+'</div><p class="disc">L’annuaire est en cours de constitution. Les noms seront ajoutés au fur et à mesure des nominations.</p></div>';
+  '<div id="annulive">'+annuLiveHtml()+'</div><h2 class="mh2" style="margin-top:30px">Les fonctions</h2><div class="dir">'+ANNUAIRE.map(function(a){return '<div class="dr"><div><b>'+a[0]+'</b><small>'+a[1]+'</small></div><div class="who">'+(a[2]||'<em>À renseigner</em>')+'</div><div class="refs">'+a[3]+'</div></div>'}).join('')+'</div>'+
+  '<p class="disc">L’annuaire est en cours de constitution. Les noms seront ajoutés au fur et à mesure des nominations.</p></div>';
 }
 
 var UPDATES=[
