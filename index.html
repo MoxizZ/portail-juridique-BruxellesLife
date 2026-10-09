@@ -216,6 +216,19 @@ footer .flinks a{color:#fff;margin-right:14px}
 .newlaw p{margin:0 0 14px}
 .newlaw.empty{border-style:dashed;border-width:2px;box-shadow:none;margin:40px 0 28px;padding:34px 32px;min-height:220px}.newlaw.empty h2{font-size:30px;margin:6px 0 14px}.newlaw.empty p{margin:0 0 10px;color:#4A5568;max-width:62ch}
 .newlaw .nl-prev{border-top:1px solid #E1E5EE;margin-top:16px;padding-top:12px;font-size:14px}.newlaw .nl-prev ul{margin:6px 0 0;padding-left:18px}
+
+.plhero{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:#fff;border-radius:14px;padding:20px 24px;margin:0 0 22px}
+.plhero b{font-family:var(--serif);font-size:22px;display:block;margin-bottom:4px}.plhero p{margin:0;color:#DDE4F5;max-width:560px;font-size:15px}
+.plhero .btn{background:#F1D98B;color:#0B1F4B;border:0;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;font-size:16px;white-space:nowrap}
+.plform{max-width:760px;display:grid;gap:14px}.plform fieldset{border:1px solid var(--line);border-radius:12px;padding:14px 16px 16px;background:var(--surface);display:grid;gap:10px}
+.plform legend{font-weight:700;padding:0 6px;color:var(--navy)}.plform label{display:grid;gap:4px;font-size:14px;font-weight:600}.plform label small{font-weight:400;color:var(--muted)}
+.plform input,.plform select,.plform textarea{font:inherit;font-weight:400;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);width:100%}
+.plform .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:600px){.plform .two{grid-template-columns:1fr}}
+.plform .hp{position:absolute;left:-9999px;height:0;overflow:hidden}
+.plsig{background:#F7F2E0;border:1px dashed var(--gold);border-radius:10px;padding:12px 14px;font-style:italic;color:#002060;font-weight:600;min-height:44px}
+.plform .chk{display:flex;gap:10px;align-items:flex-start;font-weight:600}.plform .chk input{width:auto;margin-top:4px}
+.plerr{color:var(--red);font-weight:600;min-height:20px}.plok{background:#EAF6EC;border:1px solid #9BCBA3;border-radius:12px;padding:20px 22px;max-width:640px}.plok b.num{font-size:22px;font-family:var(--serif)}
+.plform button[type=submit]{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:13px 22px;font-size:16px;font-weight:700;cursor:pointer}.plform button[disabled]{opacity:.5;cursor:not-allowed}
 </style>
 
 <a class="skip" href="#main">Aller au contenu</a>
@@ -347,7 +360,7 @@ function titreSplit(t){var k=t.indexOf('–');return k>0?[t.slice(0,k).trim(),t.
 /* Navigation */
 var NAV=[['accueil','Accueil'],['codes','Les Codes'],['guides','Guides pratiques'],['parcours','Je suis…'],['documents','Documents types'],['faq','FAQ'],['glossaire','Glossaire'],['textes','Registre des lois']];
 function navHtml(cur){
-  var sec=cur.split('-')[0];var map={accueil:'accueil',codes:'codes',guides:'guides',textes:'textes',recherche:'accueil',parcours:'parcours',documents:'documents',faq:'faq',glossaire:'glossaire'};
+  var sec=cur.split('-')[0];var map={accueil:'accueil',codes:'codes',guides:'guides',textes:'textes',recherche:'accueil',parcours:'parcours',documents:'documents',plainte:'documents',faq:'faq',glossaire:'glossaire'};
   var group=/^c[1-8]$/.test(sec)?'codes':sec==='g'?'guides':(map[sec]||'accueil');
   $('#nav').innerHTML=NAV.map(function(n){return '<a href="#'+n[0]+'"'+(n[0]===group?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('');
 }
@@ -505,7 +518,7 @@ function L(h,t){return '<a href="#'+h+'">'+t+'</a>'}
 function GF(g,n,t){return L('g-'+g+'-'+n,t)}
 function CA(c,n){return L('c'+c+'-'+slug(String(n)),'Code '+ROM[c]+', Art. '+n)}
 function pageHead(title,lead,crumb){return '<div class="crumb"><a href="#accueil">Accueil</a> › '+(crumb||title)+'</div><div class="ph"><div><h1>'+title+'</h1><p>'+lead+'</p></div></div>'}
-var WHO={"D10_Plainte": "Citoyen (victime ou témoin)", "D11_Constitution_partie_civile": "Victime", "D7_Contestation_amende_forfaitaire": "Citoyen ou avocat", "D8_Restitution_biens_ou_vehicule": "Citoyen ou avocat", "D1_Constitution_avocat_aide_juridictionnelle": "Justiciable ou avocat", "D9_Renonciation_avocat": "Prévenu", "D5_Appel_ou_pourvoi": "Avocat ou condamné"};
+var WHO={"D10_Plainte": "Citoyen (victime ou témoin)", "D11_Constitution_partie_civile": "Victime", "D7_Contestation_amende_forfaitaire": "Citoyen ou avocat", "D8_Restitution_biens_ou_vehicule": "Citoyen ou avocat", "D1_Constitution_avocat_aide_juridictionnelle": "Justiciable ou avocat", "D5_Appel_ou_pourvoi": "Avocat ou condamné"};
 function docLink(file,label,sub){
   if(!HAS_PDF)return '<div class="pdfbtn" style="opacity:.6"><span>'+label+'</span><i>bientôt</i></div>';
   return '<div class="docrow"><span class="dn"><b>'+label+'</b><em class="who">Utilisé par : '+(WHO[file]||'')+'</em><small>'+sub+'</small></span><a class="pdfbtn" href="documents/'+file+'.docx" download><span>Word</span><i>.DOCX</i></a><a class="pdfbtn" href="documents/'+file+'.pdf" target="_blank" rel="noopener"><span>Aperçu</span><i>PDF</i></a></div>';
@@ -571,10 +584,9 @@ var DOCS=[
 ['D7_Contestation_amende_forfaitaire','Contestation d’une amende forfaitaire','À déposer au greffe dans les 7 jours réels.',L('g-citoyen-17','Fiche 17')],
 ['D8_Restitution_biens_ou_vehicule','Demande de restitution de biens ou de véhicule','Après une saisie ou une mise en fourrière.',L('g-citoyen-14','Fiche 14')],
 ['D1_Constitution_avocat_aide_juridictionnelle','Constitution d’avocat et aide juridictionnelle','Pour prendre un avocat, ou demander l’aide juridictionnelle.',L('g-citoyen-8','Fiche 8')],
-['D9_Renonciation_avocat','Renonciation à l’avocat','Pour choisir par écrit de ne pas avoir d’avocat. Révocable à tout moment.',L('g-citoyen-8','Fiche 8')],
 ['D5_Appel_ou_pourvoi','Déclaration d’appel ou de pourvoi en cassation','Pour contester un jugement : 15 jours à partir du prononcé.',L('g-citoyen-19','Fiche 19')]];
 function viewDocuments(){
-  return '<div class="wrap page">'+pageHead('Documents types','Sept formulaires à télécharger en Word pour les remplir, ou à ouvrir en aperçu.')+'<div class="note warnbox"><b>Ces documents sont surtout utiles aux avocats.</b> Ce sont d’abord des actes d’avocat. Un citoyen qui n’a pas d’avocat peut aussi les utiliser lui-même, mais il est conseillé de se faire aider par un avocat. Chaque formulaire indique qui l’utilise. Les autres documents types de la justice (magistrats, greffe, barreau) sont des outils de professionnels et ne sont pas publiés ici. Les avocats sont joignables 24 h sur 24 par Radio D Justice ('+CA(5,'55 bis')+').</div>'+
+  return '<div class="wrap page">'+pageHead('Documents types','Six formulaires à télécharger en Word pour les remplir, ou à ouvrir en aperçu.')+'<section class="plhero" aria-label="Porter plainte"><div><b>⚖ Porter plainte</b><p>Plainte adressée directement au Procureur du Roi. Vous la complétez, vous la signez et vous l’envoyez : un dossier est ouvert aussitôt au Parquet.</p></div><a class="btn" href="#plainte">Porter plainte</a></section>'+'<div class="note warnbox"><b>Ces documents sont surtout utiles aux avocats.</b> Ce sont d’abord des actes d’avocat. Un citoyen qui n’a pas d’avocat peut aussi les utiliser lui-même, mais il est conseillé de se faire aider par un avocat. Chaque formulaire indique qui l’utilise. Les autres documents types de la justice (magistrats, greffe, barreau) sont des outils de professionnels et ne sont pas publiés ici. Les avocats sont joignables 24 h sur 24 par Radio D Justice ('+CA(5,'55 bis')+').</div>'+
   '<div class="doclist">'+DOCS.map(function(d){return docLink(d[0],d[1],d[2]+' Voir : '+d[3])}).join('')+'</div>'+
   (HAS_PDF?'':'<div class="note">Les téléchargements sont disponibles sur la version publiée du portail.</div>')+
   '<div class="note"><b>Comment s’en servir.</b> Ouvrez le fichier Word, cochez les cases en cliquant dessus, remplissez les champs, puis remettez le document à l’autorité concernée. Chaque formulaire indique en haut qui l’utilise et dans quel cas.</div></div>';
@@ -704,6 +716,46 @@ function viewMaj(){
   '<div class="note"><b>Comment lire un numéro de version.</b> Le premier chiffre change quand un Code est refondu. Le second change à chaque modification d’articles. Seul le Gouvernement publie et modifie les Codes ; une copie qui ne vient pas de ce portail n’est pas officielle.</div></div>';
 }
 
+function viewPlainte(){
+  var c=window.PUBLIC_CONFIG,on=!!(c&&c.SUPABASE_URL&&c.SUPABASE_ANON_KEY);
+  var o=function(t){return t+' <small>(facultatif)</small>'};
+  return '<div class="wrap page"><div class="crumb"><a href="#accueil">Accueil</a> › <a href="#documents">Documents types</a> › Porter plainte</div><div class="ph"><div><h1>Porter plainte</h1><p>Votre plainte est adressée directement au Procureur du Roi (Code I, Art. 19 ; Code III, Art. 14). Un dossier s’ouvre au Parquet dès l’envoi.</p></div></div>'+
+  (on?'':'<div class="note warnbox"><b>Le dépôt en ligne n’est pas encore activé sur ce portail.</b> Vous pouvez porter plainte auprès de la Police de Bruxelles ou du Parquet : voir la page <a href="#contact">Nous contacter</a>.</div>')+
+  '<div id="plbox"><form class="plform" id="plf" autocomplete="off" novalidate>'+
+  '<fieldset><legend>Vous</legend><div class="two"><label>Prénom<input id="pl_pre" required></label><label>Nom<input id="pl_nom" required></label></div>'+
+  '<div class="two"><label>Vous êtes<select id="pl_qual"><option>Victime</option><option>Témoin</option><option>Représentant de la victime</option></select></label><label>'+o('Téléphone ou joignabilité radio')+'<input id="pl_tel"></label></div>'+
+  '<label>'+o('Adresse')+'<input id="pl_adr"></label></fieldset>'+
+  '<fieldset><legend>Contre qui</legend><div class="two"><label>'+o('Nom')+'<input id="pl_inom"></label><label>'+o('Prénom')+'<input id="pl_ipre"></label></div>'+
+  '<label>'+o('Signalement (si la personne est inconnue : description, véhicule…)')+'<input id="pl_isig"></label></fieldset>'+
+  '<fieldset><legend>Les faits</legend><div class="two"><label>'+o('Date et heure')+'<input id="pl_date"></label><label>'+o('Lieu')+'<input id="pl_lieu"></label></div>'+
+  '<label>Description des faits<textarea id="pl_faits" rows="7" required placeholder="Chronologie, violences, dégâts, objets volés, circonstances…"></textarea></label>'+
+  '<label>'+o('Témoins et pièces')+'<textarea id="pl_tem" rows="3"></textarea></label></fieldset>'+
+  '<fieldset><legend>Signature</legend><label class="chk"><input type="checkbox" id="pl_cert"> Je certifie que ces déclarations sont sincères et je signe cette plainte.</label>'+
+  '<label>Tapez votre prénom et votre nom pour signer<input id="pl_sig" autocomplete="off"></label><div class="plsig" id="pl_sigv" aria-live="polite">La signature apparaîtra ici.</div></fieldset>'+
+  '<div class="hp" aria-hidden="true"><label>Ne pas remplir<input id="pl_site" tabindex="-1" autocomplete="off"></label></div>'+
+  '<div class="plerr" id="pl_err" role="alert"></div><button type="submit" id="pl_go"'+(on?'':' disabled')+'>Envoyer la plainte</button></form></div></div>';
+}
+function bindPlainte(){
+  var f=document.getElementById('plf');if(!f)return;
+  var g=function(i){return (document.getElementById(i)||{value:''}).value.trim()};
+  var p2=function(n){return (n<10?'0':'')+n};
+  var sigv=function(){var s=g('pl_sig'),t=new Date();document.getElementById('pl_sigv').textContent=(s&&document.getElementById('pl_cert').checked)?'Signé par '+s+', le '+p2(t.getDate())+' / '+p2(t.getMonth()+1)+' / '+t.getFullYear()+' à '+p2(t.getHours())+'h'+p2(t.getMinutes()):'La signature apparaîtra ici.'};
+  ['pl_sig','pl_cert'].forEach(function(i){document.getElementById(i).addEventListener('input',sigv);document.getElementById(i).addEventListener('change',sigv)});
+  f.addEventListener('submit',function(e){
+    e.preventDefault();var er=document.getElementById('pl_err'),btn=document.getElementById('pl_go');er.textContent='';
+    if(!g('pl_pre')||!g('pl_nom')){er.textContent='Indiquez votre prénom et votre nom.';return}
+    if(g('pl_faits').length<20){er.textContent='Décrivez les faits (au moins quelques phrases).';return}
+    if(!document.getElementById('pl_cert').checked||!g('pl_sig')){er.textContent='Cochez la case de certification et tapez votre nom pour signer.';return}
+    var c=window.PUBLIC_CONFIG;btn.disabled=true;btn.textContent='Envoi…';
+    var body={p:{pnom:g('pl_nom'),ppre:g('pl_pre'),ptel:g('pl_tel'),padr:g('pl_adr'),qual:g('pl_qual'),inom:g('pl_inom'),ipre:g('pl_ipre'),isig:g('pl_isig'),date:g('pl_date'),lieu:g('pl_lieu'),faits:g('pl_faits'),temoins:g('pl_tem'),sig:g('pl_sig'),certifie:'true',site:g('pl_site')}};
+    fetch(c.SUPABASE_URL.replace(/\/$/,'')+'/rest/v1/rpc/deposer_plainte',{method:'POST',headers:{apikey:c.SUPABASE_ANON_KEY,Authorization:'Bearer '+c.SUPABASE_ANON_KEY,'Content-Type':'application/json'},body:JSON.stringify(body)})
+     .then(function(r){return r.json().catch(function(){return null}).then(function(j){return {ok:r.ok,j:j}})})
+     .then(function(x){
+       if(!x.ok){throw new Error((x.j&&x.j.message)||'Envoi impossible pour le moment.')}
+       document.getElementById('plbox').innerHTML='<div class="plok"><b class="num">Plainte envoyée</b><p>Votre plainte est enregistrée sous le numéro <b class="num">'+esc2(String(x.j))+'</b>. Elle a été adressée au Procureur du Roi, qui peut vous contacter. Notez ce numéro.</p><p><a href="#documents">Retour aux documents</a></p></div>';window.scrollTo(0,0)})
+     .catch(function(err){er.textContent=err.message||'Envoi impossible pour le moment.';btn.disabled=false;btn.textContent='Envoyer la plainte'});
+  });
+}
 function viewContact(){
   var d='';
   return '<div class="wrap page">'+pageHead('Nous contacter','Où déposer une plainte, joindre un magistrat ou poser une question.','Contact')+d+
@@ -728,6 +780,7 @@ function route(){
   else if(h==='recherche'){html=viewSearch(LASTQ)}
   else if((m=h.match(/^parcours(?:-(\w+))?$/))){html=viewParcours(m[1])}
   else if(h==='documents'){html=viewDocuments()}
+  else if(h==='plainte'){html=viewPlainte()}
   else if(h==='faq'){html=viewFaq()}
   else if(h==='glossaire'){html=viewGlossaire()}
   else if(h==='annuaire'){html=viewAnnuaire()}
@@ -744,6 +797,7 @@ function route(){
 }
 function gosearch(q){LASTQ=q;if(location.hash==='#recherche')route();else location.hash='recherche'}
 function bind(){
+  bindPlainte();
   var hs=$('#hs');if(hs)hs.addEventListener('submit',function(e){e.preventDefault();gosearch($('#hq').value)});
   var bs=$('#bs');if(bs){bs.addEventListener('submit',function(e){e.preventDefault()});
     var bq=$('#bq'),tm;bq.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(function(){LASTQ=bq.value;var p=bq.selectionStart;route();var n=$('#bq');n.focus();try{n.setSelectionRange(p,p)}catch(e){}},180)});
