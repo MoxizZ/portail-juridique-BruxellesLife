@@ -233,6 +233,7 @@ footer .flinks a{color:#fff;margin-right:14px}
 .svmsg{max-width:640px;border-left:4px solid #B8912F;background:#FBF6E4;border-radius:8px;padding:14px 16px;margin:10px 0}.svmsg small{display:block;color:var(--muted);margin-top:6px}
 .plerr{color:var(--red);font-weight:600;min-height:20px}.plok{background:#EAF6EC;border:1px solid #9BCBA3;border-radius:12px;padding:20px 22px;max-width:640px}.plok b.num{font-size:22px;font-family:var(--serif)}
 .plform button[type=submit]{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:13px 22px;font-size:16px;font-weight:700;cursor:pointer}.plform button[disabled]{opacity:.5;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{background:#fff;border:1px solid var(--line,#dde2ee);border-radius:999px;padding:9px 16px;text-decoration:none;color:#0B1F4B;font-weight:600}.chip span{color:#B8912F;margin-right:8px;font-family:var(--serif)}.g-three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:700px){.g-three{grid-template-columns:1fr}}
 </style>
 
 <a class="skip" href="#main">Aller au contenu</a>
@@ -413,11 +414,8 @@ function viewHome(){
   var h=q+'<div class="wrap">'+
   '<section class="block"><h2>Que faire si…</h2><p class="sub">Les situations les plus courantes, expliquées pas à pas, avec les articles qui s’appliquent.</p><div class="grid g-act">'+act+'</div></section>'+
   '<section class="block"><h2>Je suis…</h2><p class="sub">Choisissez votre situation : une suite d’étapes vous mène aux bons articles.</p><div class="grid g-act">'+PARCOURS.map(function(p){return '<a class="act" href="#parcours-'+p.id+'"><b>'+p.t+'</b><span>'+p.d+'</span><em>'+p.s.length+' étapes</em></a>'}).join('')+'</div><p style="margin:12px 0 0">'+L('faq','Questions fréquentes')+' · '+L('documents','Documents types')+' · '+L('glossaire','Glossaire')+'</p></section>'+
-  '<section class="block"><h2>Les huit Codes</h2><p class="sub">Texte intégral, avec renvois cliquables d’un article à l’autre.</p><div class="grid g-codes">'+codes+'</div>'+
-  '<div class="hier" role="group" aria-label="Hiérarchie des normes"><span><b>Ordre de priorité</b></span><span>Code I</span>›<span>Code II</span>›<span>Code III</span>›<span>Codes IV à VIII</span></div></section>'+
-  '<section class="block"><h2>Guides pratiques</h2><p class="sub">Des résumés pour s’y retrouver. Ils ne remplacent pas les Codes.</p><div class="grid g-two">'+guides+'</div></section>'+
-  '<section class="block"><h2>Documents types</h2><p class="sub">Des formulaires à remplir. Ces documents sont principalement utiles pour les avocats ; un citoyen sans avocat peut aussi les utiliser.</p><a class="act" href="#documents" style="max-width:420px"><b>Voir les documents types</b><span>Plainte, partie civile, amende, restitution, avocat, appel.</span><em>7 documents</em></a></section>'+
-  '<div class="note"><b>Pour déposer une plainte ou joindre un magistrat</b>, consultez la page <a href="#contact">Nous contacter</a>. La fiche « Porter plainte » explique la marche à suivre.</div></div>';
+  '<section class="block"><h2>Les huit Codes</h2><div class="chips">'+[1,2,3,4,5,6,7,8].map(function(c){return '<a class="chip" href="#c'+c+'"><span>'+ROM[c]+'</span>'+CINFO[c].n+'</a>'}).join('')+'</div><p class="sub" style="margin:10px 0 0">Ordre de priorité : Code I › Code II › Code III › Codes IV à VIII.</p></section>'+
+  '<section class="block"><div class="grid g-three"><a class="act" href="#guides"><b>Guides pratiques</b><span>Citoyen et chef d’entreprise.</span></a><a class="act" href="#documents"><b>Documents types</b><span>Formulaires à remplir.</span></a><a class="act" href="#faq"><b>FAQ et glossaire</b><span>Réponses rapides.</span></a></div></section></div>';
   return h;
 }
 function viewCodes(){
