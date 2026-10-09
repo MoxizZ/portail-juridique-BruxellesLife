@@ -254,6 +254,9 @@ footer .flinks a{color:#fff;margin-right:14px}
 .rjfast{margin-top:16px;background:#FBF6E4;border:1px solid #E7D79A;border-radius:14px;padding:16px 20px;display:grid;gap:4px}.rjfast b{color:#0B1F4B}.rjfast span{color:#4b5470;font-size:15px}
 .rjcta{margin:30px 0 8px;background:#0B1F4B;border-radius:18px;padding:26px 30px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.rjcta b{font-family:var(--serif);font-size:24px;color:#fff}
 @media(max-width:860px){.rjsteps{grid-template-columns:1fr 1fr}.rjstep:after{display:none}.rjvoies{grid-template-columns:1fr}.rjhero{padding:30px 22px}.rjhero h1{font-size:32px}}@media(max-width:520px){.rjsteps{grid-template-columns:1fr}}
+.barlink{display:grid;gap:4px;margin-top:22px;background:#fff;border:1px solid #dde2ee;border-left:5px solid #B8912F;border-radius:12px;padding:16px 20px;text-decoration:none;color:#0B1F4B}.barlink b{font-family:var(--serif);font-size:19px}.barlink span{color:#5b6479;font-size:14.5px}.barlink em{font-style:normal;font-weight:700;color:#8B1A1A;font-size:13px;letter-spacing:.04em}.barlink:hover{border-color:#0B1F4B}
+.btools{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 8px}.btools input{flex:1 1 260px;min-width:0;font:inherit;padding:11px 14px;border:1px solid #cbd3df;border-radius:10px}.btools select{font:inherit;padding:11px;border:1px solid #cbd3df;border-radius:10px;background:#fff}
+.btwrap{overflow-x:auto;background:#fff;border:1px solid #dde2ee;border-radius:12px}.bt{width:100%;border-collapse:collapse;font-size:14.5px}.bt th{text-align:left;background:#0B1F4B;color:#fff;padding:10px 14px;font-weight:600;position:sticky;top:0}.bt td{padding:10px 14px;border-top:1px solid #e6eaf3;vertical-align:top}.bt tr:hover td{background:#F4F6FB}.bt .am{white-space:nowrap;font-weight:600}.bt td:last-child{white-space:nowrap}
 </style>
 
 <a class="skip" href="#main">Aller au contenu</a>
@@ -385,7 +388,7 @@ function titreSplit(t){var k=t.indexOf('–');return k>0?[t.slice(0,k).trim(),t.
 /* Navigation */
 var NAV=[['accueil','Accueil'],['codes','Les Codes'],['guides','Guides pratiques'],['parcours','Je suis…'],['documents','Documents types'],['faq','FAQ'],['glossaire','Glossaire'],['textes','Registre des lois']];
 function navHtml(cur){
-  var sec=cur.split('-')[0];var map={accueil:'accueil',codes:'codes',guides:'guides',textes:'textes',recherche:'accueil',parcours:'parcours',documents:'documents',plainte:'documents',suivi:'documents',faq:'faq',glossaire:'glossaire'};
+  var sec=cur.split('-')[0];var map={accueil:'accueil',bareme:'codes',codes:'codes',guides:'guides',textes:'textes',recherche:'accueil',parcours:'parcours',documents:'documents',plainte:'documents',suivi:'documents',faq:'faq',glossaire:'glossaire'};
   var group=/^c[1-8]$/.test(sec)?'codes':sec==='g'?'guides':(map[sec]||'accueil');
   $('#nav').innerHTML=NAV.map(function(n){return '<a href="#'+n[0]+'"'+(n[0]===group?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('');
 }
@@ -441,7 +444,7 @@ function viewHome(){
 function viewCodes(){
   var codes=[1,2,3,4,5,6,7,8].map(function(c){var n=0;D.codes[c].titres.forEach(function(t){n+=t.articles.length});
     return '<a class="codecard" href="#c'+c+'"><span class="roman">'+ROM[c]+'</span><b>'+CINFO[c].n+'</b><span>'+CINFO[c].d+'</span><small>'+n+' articles</small></a>'}).join('');
-  return '<div class="wrap page"><div class="ph"><div><h1>Les huit Codes</h1><p>Le Code I prime sur tous les autres, puis le Code II, puis le Code III, puis les Codes IV à VIII (Code I, Art. 3).</p></div></div><div class="grid g-codes">'+codes+'</div></div>';
+  return '<div class="wrap page"><div class="ph"><div><h1>Les huit Codes</h1><p>Le Code I prime sur tous les autres, puis le Code II, puis le Code III, puis les Codes IV à VIII (Code I, Art. 3).</p></div></div><div class="grid g-codes">'+codes+'</div><a class="barlink" href="#bareme"><b>📊 Barème des amendes et des peines</b><span>Toutes les infractions du Code II en un tableau : amende, prison, mesures complémentaires.</span><em>Ouvrir le barème →</em></a></div>';
 }
 function viewCode(c){
   var C=D.codes[c],n=0;C.titres.forEach(function(t){n+=t.articles.length});
@@ -740,6 +743,34 @@ function viewMaj(){
 
 function plStore(n,nom){try{var l=JSON.parse(localStorage.getItem('pl_suivi')||'[]');l=l.filter(function(x){return x.n!==n});l.unshift({n:n,nom:nom});localStorage.setItem('pl_suivi',JSON.stringify(l.slice(0,10)))}catch(e){}}
 function plList(){try{var l=JSON.parse(localStorage.getItem('pl_suivi')||'[]');return Array.isArray(l)?l:[]}catch(e){return []}}
+var BAR=null;
+function barRows(){
+  if(BAR)return BAR;BAR=[];
+  D.codes[2].titres.forEach(function(t){var m=t.name.match(/SECTION ([A-D])/);if(!m)return;
+    t.articles.forEach(function(a){
+      var am='',pr='',me='';
+      a.lines.forEach(function(l){var x=l.replace(/^•\s*/,'');
+        if(/^Sanctions? pécuniaires?/i.test(x))am=x.replace(/^[^:]*:\s*/,'').replace(/^Amende (de |d’)?/i,'').replace(/\.$/,'');
+        else if(/^Sanction pénale/i.test(x))pr=x.replace(/^[^:]*:\s*/,'').replace(/\.$/,'');
+        else if(/^Mesures? complémentaires?/i.test(x))me=x.replace(/^[^:]*:\s*/,'').replace(/\.$/,'')});
+      BAR.push({s:m[1],n:a.n,t:a.title,am:am,pr:(pr==='-'||/^pas de peine/i.test(pr))?'—':pr,me:me||'—'})})});
+  return BAR;
+}
+var BSEC={A:'A · Voie publique et circulation',B:'B · Délits mineurs',C:'C · Délits majeurs',D:'D · Crimes'};
+function viewBareme(){
+  var rows=barRows();
+  return '<div class="wrap page"><div class="crumb"><a href="#accueil">Accueil</a> › <a href="#codes">Les Codes</a> › Barème</div><div class="ph"><div><h1>Barème des amendes et des peines</h1><p>Les sanctions du Code II (Code pénal), infraction par infraction. Le texte du Code reste la seule référence : cliquez sur un article pour le lire en entier.</p></div></div>'+
+  '<div class="btools"><input id="barq" type="search" placeholder="Une infraction : vitesse, vol, arme…" aria-label="Rechercher une infraction" autocomplete="off"><select id="bars" aria-label="Catégorie"><option value="">Toutes les catégories</option>'+Object.keys(BSEC).map(function(k){return '<option value="'+k+'">'+BSEC[k]+'</option>'}).join('')+'</select></div><p class="sub" id="bcount"></p>'+
+  '<div class="btwrap"><table class="bt"><thead><tr><th>Infraction</th><th>Amende</th><th>Prison</th><th>Mesure complémentaire</th><th>Article</th></tr></thead><tbody id="bbody"></tbody></table></div></div>';
+}
+function bindBareme(){
+  var q=document.getElementById('barq');if(!q)return;var sel=document.getElementById('bars');
+  var paint=function(){var v=norm(q.value.trim()),rs=barRows().filter(function(r){return (!sel.value||r.s===sel.value)&&(!v||norm(r.t+' '+r.me+' '+r.n).indexOf(v)>=0)});
+    document.getElementById('bcount').textContent=rs.length+' infraction'+(rs.length>1?'s':'');
+    document.getElementById('bbody').innerHTML=rs.map(function(r){return '<tr><td><b>'+esc(r.t)+'</b></td><td class="am">'+esc(r.am||'—')+'</td><td>'+esc(r.pr)+'</td><td>'+esc(r.me)+'</td><td><a href="#c2-'+qa2(r.n)+'">Art. '+esc(r.n)+'</a></td></tr>'}).join('')};
+  q.addEventListener('input',paint);sel.addEventListener('change',paint);paint();
+}
+function qa2(n){return 'art-'+n}
 function viewRejoindre(){
   var st=[['📝','Test d’entrée','Un test oral facile sur les bases.'],['⚖️','Avocat stagiaire','Environ un mois, sous observation.'],['🎯','Test de confirmation','Plus difficile : il fait de vous un avocat.'],['🎓','Avocat','Vous choisissez la suite, quand vous êtes prêt.']];
   var vo=[['🔎','Juge d’instruction','Vous menez l’enquête sur les crimes et délits graves.',''],['🏛️','Juge','Vous jugez au tribunal, là où le juge en chef vous affecte.',''],['📜','Substitut du Procureur','Vous portez l’accusation au nom de la société.','Voie rapide']];
@@ -845,6 +876,7 @@ function route(){
   else if(h==='documents'){html=viewDocuments()}
   else if(h==='plainte'){html=viewPlainte()}
   else if(h==='suivi'){html=viewSuivi()}
+  else if(h==='bareme'){html=viewBareme()}
   else if(h==='rejoindre'){html=viewRejoindre()}
   else if(h==='faq'){html=viewFaq()}
   else if(h==='glossaire'){html=viewGlossaire()}
@@ -862,7 +894,7 @@ function route(){
 }
 function gosearch(q){LASTQ=q;if(location.hash==='#recherche')route();else location.hash='recherche'}
 function bind(){
-  bindSuivi();bindRejoindre();
+  bindSuivi();bindRejoindre();bindBareme();
   bindPlainte();
   var hs=$('#hs');if(hs)hs.addEventListener('submit',function(e){e.preventDefault();gosearch($('#hq').value)});
   var bs=$('#bs');if(bs){bs.addEventListener('submit',function(e){e.preventDefault()});
