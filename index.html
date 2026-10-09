@@ -723,7 +723,7 @@ function viewPlainte(){
   (on?'':'<div class="note warnbox"><b>Le dépôt en ligne n’est pas encore activé sur ce portail.</b> Vous pouvez porter plainte auprès de la Police de Bruxelles ou du Parquet : voir la page <a href="#contact">Nous contacter</a>.</div>')+
   '<div id="plbox"><form class="plform" id="plf" autocomplete="off" novalidate>'+
   '<fieldset><legend>Vous</legend><div class="two"><label>Prénom<input id="pl_pre" required></label><label>Nom<input id="pl_nom" required></label></div>'+
-  '<div class="two"><label>Vous êtes<select id="pl_qual"><option>Victime</option><option>Témoin</option><option>Représentant de la victime</option></select></label><label>'+o('Téléphone ou joignabilité radio')+'<input id="pl_tel"></label></div>'+
+  '<div class="two"><label>Vous êtes<select id="pl_qual"><option>Victime</option><option>Témoin</option><option>Représentant de la victime</option></select></label><label>Téléphone ou de quoi vous contacter<input id="pl_tel" required placeholder="Numéro de téléphone, radio…"></label></div>'+
   '<label>'+o('Adresse')+'<input id="pl_adr"></label></fieldset>'+
   '<fieldset><legend>Contre qui</legend><div class="two"><label>'+o('Nom')+'<input id="pl_inom"></label><label>'+o('Prénom')+'<input id="pl_ipre"></label></div>'+
   '<label>'+o('Signalement (si la personne est inconnue : description, véhicule…)')+'<input id="pl_isig"></label></fieldset>'+
@@ -744,6 +744,7 @@ function bindPlainte(){
   f.addEventListener('submit',function(e){
     e.preventDefault();var er=document.getElementById('pl_err'),btn=document.getElementById('pl_go');er.textContent='';
     if(!g('pl_pre')||!g('pl_nom')){er.textContent='Indiquez votre prénom et votre nom.';return}
+    if(g('pl_tel').length<3){er.textContent='Indiquez un numéro de téléphone ou de quoi vous contacter.';return}
     if(g('pl_faits').length<20){er.textContent='Décrivez les faits (au moins quelques phrases).';return}
     if(!document.getElementById('pl_cert').checked||!g('pl_sig')){er.textContent='Cochez la case de certification et tapez votre nom pour signer.';return}
     var c=window.PUBLIC_CONFIG;btn.disabled=true;btn.textContent='Envoi…';
