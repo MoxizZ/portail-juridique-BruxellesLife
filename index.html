@@ -234,6 +234,9 @@ footer .flinks a{color:#fff;margin-right:14px}
 .plerr{color:var(--red);font-weight:600;min-height:20px}.plok{background:#EAF6EC;border:1px solid #9BCBA3;border-radius:12px;padding:20px 22px;max-width:640px}.plok b.num{font-size:22px;font-family:var(--serif)}
 .plform button[type=submit]{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:13px 22px;font-size:16px;font-weight:700;cursor:pointer}.plform button[disabled]{opacity:.5;cursor:not-allowed}
 .chips{display:flex;flex-wrap:wrap;gap:8px}.chip{background:#fff;border:1px solid var(--line,#dde2ee);border-radius:999px;padding:9px 16px;text-decoration:none;color:#0B1F4B;font-weight:600}.chip span{color:#B8912F;margin-right:8px;font-family:var(--serif)}.g-three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:700px){.g-three{grid-template-columns:1fr}}
+[hidden]{display:none!important}.joinban{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;border:1px solid #dde2ee;border-left:5px solid #B8912F;border-radius:12px;padding:16px 20px;margin:22px 0 -8px}.joinban b{font-family:var(--serif);font-size:19px;color:#0B1F4B}.joinban p{margin:4px 0 0;color:#5b6479;font-size:14.5px}.joinban .btn{background:#0B1F4B;color:#fff;padding:10px 20px;border-radius:10px;font-weight:700;text-decoration:none;white-space:nowrap}
+.back{font-weight:600;text-decoration:none}.steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.step4{background:#fff;border:1px solid #dde2ee;border-radius:12px;padding:16px}.step4 i{display:inline-flex;width:28px;height:28px;border-radius:50%;background:#0B1F4B;color:#F1D98B;align-items:center;justify-content:center;font-style:normal;font-weight:700;margin-bottom:8px}.step4 b{display:block;font-family:var(--serif);margin-bottom:4px}.step4 span{color:#5b6479;font-size:14px}.plhero button.btn{cursor:pointer;font-family:inherit}@media(max-width:800px){.steps4{grid-template-columns:1fr 1fr}}@media(max-width:520px){.steps4{grid-template-columns:1fr}}
+.hside{display:grid;gap:18px}.joinbtn{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#F1D98B;color:#0B1F4B;border-radius:12px;padding:14px 18px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.18)}.joinbtn b{font-family:var(--serif);font-size:18px}.joinbtn span{font-weight:700;font-size:14px;white-space:nowrap}.joinbtn:hover{background:#f6e4a6}
 </style>
 
 <a class="skip" href="#main">Aller au contenu</a>
@@ -405,7 +408,7 @@ function newLawHtml(){
 function viewHome(){
   var q='<section class="hero"><div class="wrap"><div><div class="eyebrow">BruxellesLife · Ville de Bruxelles</div><h1>Les lois de la Ville de Bruxelles, au même endroit</h1><p class="lead">Les huit Codes, deux guides pratiques et le Registre des lois à télécharger. Une seule version, la version en vigueur.</p>'+
   '<form class="searchbox" id="hs" role="search"><input id="hq" type="search" placeholder="Un mot ou « Code III art 14 »" aria-label="Rechercher dans les Codes et les guides" autocomplete="off"><button type="submit">Rechercher</button></form><p class="hint">Appuyez sur <kbd>/</kbd> pour rechercher depuis n’importe quelle page.</p></div>'+
-  '<div class="facts"><div><b>'+totalArts()+'</b><span>articles en vigueur</span></div><div><b>8</b><span>Codes</span></div><div><b>2</b><span>guides pratiques</span></div></div></div></section>';
+  '<div class="hside"><a class="joinbtn" href="#rejoindre"><b>⚖ Rejoindre la Justice</b><span>Devenir membre →</span></a><div class="facts"><div><b>'+totalArts()+'</b><span>articles en vigueur</span></div><div><b>8</b><span>Codes</span></div><div><b>2</b><span>guides pratiques</span></div></div></div></div></section>';
   var act=QUICK.map(function(a){return '<a class="act" href="#g-'+a[2]+'-'+a[3]+'"><b>'+a[0]+'</b><span>'+a[1]+'</span><em>Voir la fiche</em></a>'}).join('');
   var codes=[1,2,3,4,5,6,7,8].map(function(c){var n=0;D.codes[c].titres.forEach(function(t){n+=t.articles.length});
     return '<a class="codecard" href="#c'+c+'"><span class="roman">'+ROM[c]+'</span><b>'+CINFO[c].n+'</b><span>'+CINFO[c].d+'</span><small>'+n+' articles</small></a>'}).join('');
@@ -720,6 +723,16 @@ function viewMaj(){
 
 function plStore(n,nom){try{var l=JSON.parse(localStorage.getItem('pl_suivi')||'[]');l=l.filter(function(x){return x.n!==n});l.unshift({n:n,nom:nom});localStorage.setItem('pl_suivi',JSON.stringify(l.slice(0,10)))}catch(e){}}
 function plList(){try{var l=JSON.parse(localStorage.getItem('pl_suivi')||'[]');return Array.isArray(l)?l:[]}catch(e){return []}}
+function viewRejoindre(){
+  var st=[['1','Test d’entrée','Un test oral facile. Réussi, vous devenez avocat en test.'],['2','Avocat en test','Environ un mois d’exercice sous observation.'],['3','Test de confirmation','Un second test, plus difficile. Réussi, vous êtes avocat.'],['4','Avocat','Vous pouvez demander à devenir juge d’instruction, juge ou substitut quand vous voulez.']];
+  return '<div class="wrap page"><p class="crumb"><a class="back" href="#accueil">← Retour à l’accueil</a></p>'+
+  '<section class="plhero"><div><b>⚖ Rejoignez la Justice de Bruxelles</b><p>La Justice recrute. <strong>Tout commence par le métier d’avocat</strong>, puis vous pouvez évoluer vers le siège, l’instruction ou le Parquet.</p></div><span class="plact"><button class="btn" id="postuler" type="button">Postuler</button></span></section>'+
+  '<p class="note" id="postnote" hidden>Les candidatures ne sont pas encore ouvertes. Revenez bientôt.</p>'+
+  '<h2>Comment évoluer</h2><div class="steps4">'+st.map(function(x){return '<div class="step4"><i>'+x[0]+'</i><b>'+x[1]+'</b><span>'+x[2]+'</span></div>'}).join('')+'</div>'+
+  '<h2 style="margin-top:28px">Ensuite, trois voies</h2><div class="grid g-three"><div class="act"><b>Juge d’instruction</b><span>Enquête sur les crimes et délits graves.</span></div><div class="act"><b>Juge</b><span>Juge au tribunal selon l’affectation du juge en chef.</span></div><div class="act"><b>Substitut du Procureur</b><span>Voie rapide possible dès l’avocat en test : vous suivez le Procureur du Roi, qui peut vous prendre comme substitut.</span></div></div>'+
+  '<div class="note" style="margin-top:22px"><b>Le détail du parcours</b> (tests, délais, qui décide) est expliqué dans le document ci-dessous. <a class="pdfdl" href="documents/Parcours_et_evolution_dans_la_Justice.pdf" target="_blank" rel="noopener">Télécharger le PDF « Parcours et évolution »</a></div></div>';
+}
+function bindRejoindre(){var b=document.getElementById('postuler');if(b)b.onclick=function(){var n=document.getElementById('postnote');n.hidden=false}}
 function viewSuivi(){
   var c=window.PUBLIC_CONFIG,on=!!(c&&c.SUPABASE_URL&&c.SUPABASE_ANON_KEY),l=plList()[0]||{n:'',nom:''};
   return '<div class="wrap page"><div class="crumb"><a href="#accueil">Accueil</a> › <a href="#documents">Documents types</a> › État de ma plainte</div><div class="ph"><div><h1>État de ma plainte</h1><p>Entrez le numéro reçu au moment du dépôt (il commence par PL-) et votre nom de famille.</p></div></div>'+
@@ -814,6 +827,7 @@ function route(){
   else if(h==='documents'){html=viewDocuments()}
   else if(h==='plainte'){html=viewPlainte()}
   else if(h==='suivi'){html=viewSuivi()}
+  else if(h==='rejoindre'){html=viewRejoindre()}
   else if(h==='faq'){html=viewFaq()}
   else if(h==='glossaire'){html=viewGlossaire()}
   else if(h==='annuaire'){html=viewAnnuaire()}
@@ -830,7 +844,7 @@ function route(){
 }
 function gosearch(q){LASTQ=q;if(location.hash==='#recherche')route();else location.hash='recherche'}
 function bind(){
-  bindSuivi();
+  bindSuivi();bindRejoindre();
   bindPlainte();
   var hs=$('#hs');if(hs)hs.addEventListener('submit',function(e){e.preventDefault();gosearch($('#hq').value)});
   var bs=$('#bs');if(bs){bs.addEventListener('submit',function(e){e.preventDefault()});
