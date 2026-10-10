@@ -61,6 +61,7 @@ section.block{padding-block:44px 8px}
 .block .sub{color:var(--muted);margin:6px 0 24px;max-width:62ch}
 .grid{display:grid;gap:14px}
 .g-act{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+@media(min-width:1000px){.g-act{grid-template-columns:repeat(5,minmax(0,1fr))}.g-act .act{padding:14px 14px}.g-act .act b{font-size:17px;line-height:1.25}}
 .g-codes{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
 .g-two{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .act{display:flex;flex-direction:column;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;color:inherit;text-decoration:none;min-width:0}
