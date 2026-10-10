@@ -66,7 +66,7 @@ section.block{padding-block:44px 8px}
 .act{display:flex;flex-direction:column;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;color:inherit;text-decoration:none;min-width:0}
 .act:hover{border-color:var(--navy);box-shadow:0 2px 0 var(--gold)}
 .act b{font-family:var(--serif);font-size:19px;font-weight:600}
-.act span{font-size:14px;color:var(--muted)}
+.act span{font-size:14px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .act em{font-style:normal;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--red);margin-top:6px}
 .codecard{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;color:inherit;text-decoration:none;min-width:0}
 .codecard:hover{border-color:var(--navy);box-shadow:0 2px 0 var(--gold)}
@@ -298,15 +298,15 @@ var CINFO={
 8:{n:'Route et secours',d:'Circulation routière et services de secours.',pdf:'Code_VIII_Route_et_secours'}};
 var GINFO={citoyen:{n:'Guide pratique du citoyen',d:'Vos droits et démarches : contrôle, garde à vue, saisie, route, plainte, vie civile, convocation et jugement.'},
 chef:{n:'Guide pratique du chef d’entreprise',d:'Créer, embaucher, licencier, déclarer et être contrôlé.'}};
-var QUICK=[['Je veux porter plainte','Comment déposer une plainte et qui la reçoit.','citoyen',18],
-['Je suis arrêté','Mes droits dès l’arrestation et en garde à vue.','citoyen',6],
-['On me contrôle','Contrôle d’identité, palpation, fouille.','citoyen',4],
-['Je veux un avocat','Choisi ou commis d’office, et dans quel délai.','citoyen',8],
-['J’ai reçu une amende','Contrôle routier, amende et délais pour la contester.','citoyen',17],
-['Ma voiture est en fourrière','Durée, conditions et façon de contester.','citoyen',13],
-['Je suis convoqué au tribunal','Citation, témoin, victime et déroulement de l’audience.','citoyen',25],
-['Je veux faire appel','Délais, effets de l’appel, exécution de la peine et casier.','citoyen',26],
-['Je veux créer une entreprise','Qui peut créer, et comment l’enregistrer.','chef',1],
+var QUICK=[['Je veux porter plainte','Déposer une plainte, et qui la reçoit.','citoyen',18],
+['Je suis arrêté','Mes droits en arrestation et garde à vue.','citoyen',6],
+['On me contrôle','Identité, palpation et fouille.','citoyen',4],
+['Je veux un avocat','Avocat choisi ou commis d’office, délais.','citoyen',8],
+['J’ai reçu une amende','Contrôle routier, amende et contestation.','citoyen',17],
+['Ma voiture est en fourrière','Durée, conditions et contestation.','citoyen',13],
+['Je suis convoqué au tribunal','Citation, témoin, victime et audience.','citoyen',25],
+['Je veux faire appel','Délais, effets et exécution de l’appel.','citoyen',26],
+['Je veux créer une entreprise','Qui peut créer, et comment enregistrer.','chef',1],
 ['Je veux licencier','Préavis, motifs et procédure.','chef',8]];
 var $=function(s,r){return (r||document).querySelector(s)};
 function norm(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()}
